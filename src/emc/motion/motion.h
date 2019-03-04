@@ -117,6 +117,8 @@ extern "C" {
     EMCMOT_DEACTIVATE_JOINT = 10,  /* make joint inactive */
 
     EMCMOT_PAUSE = 11,             /* pause motion */
+	EMCMOT_REVERSE,		/* run reverse motion */
+	EMCMOT_FORWARD,		/* run reverse motion */
     EMCMOT_RESUME = 12,            /* resume motion */
     EMCMOT_STEP = 13,              /* resume motion until id encountered */
     EMCMOT_FREE = 14,              /* set mode to free (joint) motion */
@@ -681,7 +683,7 @@ Suggestion: Split this in to an Error and a Status flag register..
 	int overrideLimitMask;	/* non-zero means one or more limits ignored */
 				/* 1 << (joint-num*2) = ignore neg limit */
 				/* 2 << (joint-num*2) = ignore pos limit */
-
+	int reverse_run;
 
 	/* static status-- only changes upon input commands, e.g., config */
 	double vel;		/* scalar max vel */
