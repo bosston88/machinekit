@@ -130,5 +130,7 @@ typedef struct {
     tcqFull_t           tcqFull;
 } vtp_t;
 
+int tpSetRunDir(TP_STRUCT * const tp, tc_direction_t dir);
+int tpIsMoving(TP_STRUCT const * const tp);
 
 #endif				/* TP_H */
