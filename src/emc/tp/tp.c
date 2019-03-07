@@ -72,7 +72,7 @@ STATIC inline int tpAddSegmentToQueue(
         TC_STRUCT * const tc,
         int inc_id);
 
-STATIC inline double tcGetMaxTargetVel(TC_STRUCT const * const tc, double vLimit);
+STATIC inline double tcGetMaxTargetVel(TP_STRUCT const * const tp, TC_STRUCT const * const tc);
 
 
 STATIC int tpAdjustAccelForTangent(TP_STRUCT const * const,
@@ -227,7 +227,7 @@ STATIC inline double tpGetRealTargetVel(TP_STRUCT const * const tp,
     /*tc_debug_print("Initial v_target = %f\n",v_target);*/
 
     // Get the maximum allowed target velocity, and make sure we're below it
-    return rtapi_fmin(v_target * tpGetFeedScale(tp,tc), tcGetMaxTargetVel(tc, tp->vLimit));
+    return rtapi_fmin(v_target * tpGetFeedScale(tp,tc), tcGetMaxTargetVel(tp, tc));
 }
 
 
@@ -235,7 +235,9 @@ STATIC inline double tpGetRealTargetVel(TP_STRUCT const * const tp,
  * Get the worst-case target velocity for a segment based on the trajectory
  * planner state.
  */
-STATIC inline double tcGetMaxTargetVel(TC_STRUCT const * const tc, double vLimit)
+STATIC inline double tcGetMaxTargetVel(
+        TP_STRUCT const * const tp,
+        TC_STRUCT const * const tc)
 {
 #ifdef TP_PEDANTIC
     if (!tp || !tc) {
@@ -260,7 +262,7 @@ STATIC inline double tcGetMaxTargetVel(TC_STRUCT const * const tc, double vLimit
      */
     if (!tcPureRotaryCheck(tc) && (tc->synchronized != TC_SYNC_POSITION)){
         /*tc_debug_print("Cartesian velocity limit active\n");*/
-        v_max_target = rtapi_fmin(v_max_target, vLimit);
+        v_max_target = rtapi_fmin(v_max_target, tp->vLimit);
     }
 
     // Clip maximum velocity by the segment's own maximum velocity
@@ -719,7 +721,7 @@ STATIC double tpCalculateOptimizationInitialVel(TP_STRUCT const * const tp, TC_S
     double acc_scaled = tcGetScaledAccel(tc);
     //FIXME this is defined in two places!
     double triangle_vel = pmSqrt( acc_scaled * tc->target * BLEND_DIST_FRACTION);
-    double max_vel = tcGetMaxTargetVel(tc, tp->vLimit);
+    double max_vel = tcGetMaxTargetVel(tp, tc);
     tp_debug_print("optimization initial vel for segment %d is %f\n", tc->id, triangle_vel);
     return rtapi_fmin(triangle_vel, max_vel);
 }
