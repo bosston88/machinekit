@@ -235,7 +235,7 @@ STATIC inline double tpGetRealTargetVel(TP_STRUCT const * const tp,
  * Get the worst-case target velocity for a segment based on the trajectory
  * planner state.
  */
-STATIC inline double tpGetMaxTargetVel(TC_STRUCT const * const tc, double vLimit)
+STATIC inline double tcGetMaxTargetVel(TC_STRUCT const * const tc, double vLimit)
 {
 #ifdef TP_PEDANTIC
     if (!tp || !tc) {
