@@ -91,6 +91,8 @@ typedef int (*tpSetDout_t)(TP_STRUCT * tp, unsigned int index, unsigned char sta
 typedef int (*tpIsPaused_t)(TP_STRUCT * tp);
 typedef int (*tpSnapshot_t)(TP_STRUCT * from, TP_STRUCT * to);
 
+typedef int (*tpSetRunDir_t)(TP_STRUCT * const tp, tc_direction_t dir);
+typedef int (*tpIsMoving_t)(TP_STRUCT const * const tp);
 
 // the tp API vtable
 typedef struct {
@@ -128,9 +130,8 @@ typedef struct {
     tpIsPaused_t	tpIsPaused;
     tpSnapshot_t	tpSnapshot;
     tcqFull_t           tcqFull;
+    tpSetRunDir_t	tpSetRunDir;
+    tpIsMoving_t	tpIsMoving;
 } vtp_t;
-
-int tpSetRunDir(TP_STRUCT * const tp, tc_direction_t dir);
-int tpIsMoving(TP_STRUCT const * const tp);
 
 #endif				/* TP_H */
