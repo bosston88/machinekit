@@ -1100,14 +1100,14 @@ int emcmotCommandHandler(void *arg, const hal_funct_args_t *fa)
 	    /* run motion in reverse*/
 	    /* only allowed during a pause */
 	    rtapi_print_msg(RTAPI_MSG_DBG, "REVERSE");
-        tpSetRunDir(&emcmotDebug->tp, TC_DIR_REVERSE);
+        emcmotConfig->vtp->tpSetRunDir(emcmotQueue, TC_DIR_REVERSE); //tpSetRunDir(&emcmotDebug->tp, TC_DIR_REVERSE); 
 	    break;
 
 	case EMCMOT_FORWARD:
 	    /* run motion in reverse*/
 	    /* only allowed during a pause */
 	    rtapi_print_msg(RTAPI_MSG_DBG, "FORWARD");
-        tpSetRunDir(&emcmotDebug->tp, TC_DIR_FORWARD);
+        emcmotConfig->vtp->tpSetRunDir(emcmotQueue, TC_DIR_FORWARD); //tpSetRunDir(&emcmotDebug->tp, TC_DIR_FORWARD);
 	    break;
 			
 	case EMCMOT_RESUME:
