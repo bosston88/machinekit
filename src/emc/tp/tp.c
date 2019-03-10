@@ -3457,6 +3457,20 @@ int tpSetDout(TP_STRUCT * const tp, unsigned int index, unsigned char start, uns
     return TP_ERR_OK;
 }
 
+int tpIsMoving(TP_STRUCT const * const tp)
+{
+
+    //TODO may be better to explicitly check velocities on the first 2 segments, but this is messy
+    if (get_current_vel(tp->shared) >= TP_VEL_EPSILON ) {
+        tp_debug_print("TP moving, current_vel = %.16g\n", get_current_vel(tp->shared));
+        return true;
+    } else if (tp->spindle.waiting_for_index != MOTION_INVALID_ID || tp->spindle.waiting_for_atspeed != MOTION_INVALID_ID) {
+        tp_debug_print("TP moving, waiting for index or atspeed\n");
+        return true;
+    }
+    return false;
+}
+
 int tpSetRunDir(TP_STRUCT * const tp, tc_direction_t dir)
 {
     // Can't change direction while moving
@@ -3475,19 +3489,7 @@ int tpSetRunDir(TP_STRUCT * const tp, tc_direction_t dir)
     }
 }
 
-int tpIsMoving(TP_STRUCT const * const tp)
-{
 
-    //TODO may be better to explicitly check velocities on the first 2 segments, but this is messy
-    if (get_current_vel(tp->shared) >= TP_VEL_EPSILON ) {
-        tp_debug_print("TP moving, current_vel = %.16g\n", get_current_vel(tp->shared));
-        return true;
-    } else if (tp->spindle.waiting_for_index != MOTION_INVALID_ID || tp->spindle.waiting_for_atspeed != MOTION_INVALID_ID) {
-        tp_debug_print("TP moving, waiting for index or atspeed\n");
-        return true;
-    }
-    return false;
-}
 
 // test whether a tpPause() has actually resulted in motion stopped
 // needed since a synchronized motion in progress will not be paused
