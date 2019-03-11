@@ -1,1 +1,1 @@
-setp motion.adaptive-feed pyvcp.scale
+net mysig motion.adaptive-feed <= pyvcp.scale-f
